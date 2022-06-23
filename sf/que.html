@@ -1,0 +1,92 @@
+<html>
+  <body>
+    <br /><input
+      type="text"
+      name="bookid"
+      id="bookid"
+      placeholder="Book ID"
+    /><span id="msg">Status shown here</span> <br /><input
+      type="text"
+      name="bookname"
+      id="bookname"
+      placeholder="Book Name"
+    />
+    <br /><input type="text" name="price" id="price" placeholder="Price" />
+    <input type="submit" id="update" value="Update" />
+
+    <!-- <button id="b2">jquery works</button> -->
+  </body>
+
+  <script src="jquery-3.5.1.min.js"></script>
+  <script>
+    let book = [];
+    book.push({ bookid: 1, bookname: "book1", price: 100 });
+    book.push({ bookid: 2, bookname: "book2", price: 200 });
+    book.push({ bookid: 3, bookname: "book3", price: 300 });
+    //our scrip will come here
+
+    $(document).ready(function () {
+      console.log("no more sins");
+      $("#bookid").blur(() => {
+        console.log("blur event occures");
+        // let input = {bookid:1, bookname:'book1', price:100};
+        let input = { book: $("#bookid").val() };
+        let parameterstothefunction = {
+          data: input,
+          url: "http://localhost:8081/getBookDetails",
+          type: "get",
+          datatype: "text",
+          sucess: (datafromtheserver) => {
+            if (datafromtheserver.status === true) {
+              console.log("data fetched sucessfully");
+              $("#bookname").val(datafromtheserver.bookdetails.bookname);
+              $("#price").val(datafromtheserver.bookdetails.price);
+              $("#msg").val("Employee details found");
+              $("#update").prop("disabled", false);
+            } else {
+              $("#bookname").val("");
+              $("#price").val("");
+              $("#msg").val("Employee details not found");
+              $("#update").prop("disabled", true);
+            }
+          },
+          error: (errorfromtheserver) => {
+            console.log("Error fetched" + errorfromtheserver);
+          },
+        };
+        //console.log(input);
+        $.ajax(parameterstothefunction); //let output = {status: true,bookdetails:{bookid:1, bookname:'book1', price:100}}
+        //console.log(output);
+      });
+      $("#update").click(() => {
+        console.log("Update button clicked");
+        let input = {
+          bookid: $("#bookid").val(),
+          bookname: $("#bookname").val(),
+          price: $("#price").val(),
+        };
+        let parameterstothefunction = {
+          data: input,
+          url: "http://localhost:8081/updatebookdetails",
+          type: "get",
+          datatype: "text",
+          sucess: (datafromtheserver) => {
+            if (datafromtheserver.status === true) {
+              console.log("Update Successful");
+              $("#msg").text("Update successful");
+            } else {
+              console.log("Update unsuccessful");
+              $("#msg").text("Update unsuccessful");
+            }
+          },
+          error: (errorfromtheserver) => {
+            console.log(errorfromtheserver);
+            $("#msg").text('"Error fetched"');
+          },
+        };
+        //console.log(input);
+        $.ajax(parameterstothefunction);
+      });
+    });
+  </script>
+</html>
