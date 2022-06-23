@@ -19,10 +19,10 @@
 
   <script src="jquery-3.5.1.min.js"></script>
   <script>
-    let book = [];
-    book.push({ bookid: 1, bookname: "book1", price: 100 });
-    book.push({ bookid: 2, bookname: "book2", price: 200 });
-    book.push({ bookid: 3, bookname: "book3", price: 300 });
+    // let book = [];
+    // book.push({ bookid: 1, bookname: "book1", price: 100 });
+    // book.push({ bookid: 2, bookname: "book2", price: 200 });
+    // book.push({ bookid: 3, bookname: "book3", price: 300 });
     //our scrip will come here
 
     $(document).ready(function () {
@@ -35,7 +35,7 @@
           data: input,
           url: "http://localhost:8081/getBookDetails",
           type: "get",
-          datatype: "text",
+          datatype: "json",
           sucess: (datafromtheserver) => {
             if (datafromtheserver.status === true) {
               console.log("data fetched sucessfully");
@@ -69,7 +69,7 @@
           data: input,
           url: "http://localhost:8081/updatebookdetails",
           type: "get",
-          datatype: "text",
+          datatype: "json",
           sucess: (datafromtheserver) => {
             if (datafromtheserver.status === true) {
               console.log("Update Successful");
